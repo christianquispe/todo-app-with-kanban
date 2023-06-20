@@ -1,0 +1,13 @@
+.Column {
+    margin: 8px;    
+    border: 1px solid lightgrey;
+    border-radius: 2px;
+}
+
+.Title {
+    padding: 8px;
+}
+
+.TaskList {
+    padding: 8px;
+}
