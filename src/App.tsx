@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import initialData from "./data/initial-data";
+import initialData, { IColumn, KanbanState } from "./data/modify-data";
 import { DragDropContext, type OnDragEndResponder } from "react-beautiful-dnd";
 import { Column } from "./components/Column";
+import { changeColumn } from "./util/kanban-utils";
 
 function App() {
-  const [data, setData] = useState<typeof initialData>();
+  const [data, setData] = useState<KanbanState>();
 
   useEffect(() => {
     setData(initialData);
@@ -13,7 +14,7 @@ function App() {
 
   const handleDragEnd: OnDragEndResponder = (result, provider) => {
     console.log({ result, provider }, "DRAG END");
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
     if (!destination) {
       console.log("No tiene destino");
       return;
@@ -26,73 +27,84 @@ function App() {
       return;
     }
 
-    const startColumn =
-      data?.columns[source.droppableId as keyof typeof data.columns];
-    const finishColumn =
-      data?.columns[destination.droppableId as keyof typeof data.columns];
+    const startColumn = data?.columns.find(
+      ({ id }) => source.droppableId === id
+    );
+    const finishColumn = data?.columns.find(
+      ({ id }) => destination.droppableId === id
+    );
+    console.log({ startColumn, finishColumn });
 
-    if (startColumn?.id === finishColumn?.id) {
-      const column =
-        data?.columns[source.droppableId as keyof typeof data.columns];
-      const newTasksIds = [...(column?.taskIds ?? [])];
-      newTasksIds.splice(source.index, 1);
-      newTasksIds.splice(destination.index, 0, draggableId);
-
-      const newColumn: any = {
-        ...column,
-        taskIds: newTasksIds,
-      };
-
-      if (!newColumn) return;
-
-      setData({
-        ...data,
-        columns: {
-          ...data?.columns,
-          [newColumn.id as any]: newColumn,
-        },
-      } as any);
+    // Para que typescript no moleste xd
+    if (!startColumn || !finishColumn) {
       return;
     }
 
+    // Si está cambiando en la misma columna
+    if (startColumn?.id === finishColumn?.id) {
+      const tasks = [...startColumn.tasks];
+      const [removed] = tasks.splice(source.index, 1);
+      tasks.splice(destination.index, 0, removed);
+      const udpColumn: IColumn = {
+        ...startColumn,
+        tasks: [...tasks],
+      };
+      const udpColumns = data?.columns.map((column) => {
+        if (source.droppableId === column.id) {
+          return udpColumn;
+        }
+        return column;
+      });
+      const updData: KanbanState = {
+        ...data,
+        columns: udpColumns ?? [],
+      };
+      setData(updData);
+      return;
+    }
+
+    // Se está moviendo a una columna diferente
+
     // Removing task form start column
-    const updStartColumnTasksIds = [...(startColumn?.taskIds ?? [])];
-    updStartColumnTasksIds.splice(source.index, 1);
+    const startTasks = [...startColumn.tasks];
+    const [movedTask] = startTasks.splice(source.index, 1);
 
-    const updStartColumn: any = {
+    const updStartColumn: IColumn = {
       ...startColumn,
-      taskIds: updStartColumnTasksIds,
+      tasks: startTasks,
     };
 
-    const updFinishColumnTasksIds = [...(finishColumn?.taskIds ?? [])];
-    updFinishColumnTasksIds.splice(destination.index, 0, draggableId);
+    const finishTasks = [...finishColumn.tasks];
+    finishTasks.splice(destination.index, 0, movedTask);
 
-    const updFinishColumn: any = {
+    const updFinishColumn: IColumn = {
       ...finishColumn,
-      taskIds: updFinishColumnTasksIds,
+      tasks: finishTasks,
     };
 
-    setData({
+    const udpColumns = changeColumn(
+      [updStartColumn, updFinishColumn],
+      data?.columns ?? []
+    );
+
+    const updData: KanbanState = {
       ...data,
-      columns: {
-        ...data?.columns,
-        [updStartColumn.id as any]: updStartColumn,
-        [updFinishColumn.id as any]: updFinishColumn,
-      },
-    } as any);
+      columns: udpColumns,
+    };
+
+    setData(updData);
   };
 
   console.log(data, "DATA");
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {data?.columnOrderByIds.map((id) => {
-        const column = data.columns[id as keyof typeof data.columns];
-        const tasks = column.taskIds.map(
-          (taskId) => data.tasks[taskId as keyof typeof data.tasks]
-        );
-        return <Column key={id} column={column} tasks={tasks} />;
-      })}
+      <div className="ColumnsList">
+        {data?.columns.map((column) => {
+          const tasks = column.tasks;
+          return <Column key={column.id} column={column} tasks={tasks} />;
+        })}
+      </div>
     </DragDropContext>
   );
 }

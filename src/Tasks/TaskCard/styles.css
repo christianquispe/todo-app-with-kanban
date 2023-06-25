@@ -1,0 +1,9 @@
+.TaskCard {
+    display: flex;
+    gap: 1rem;
+}
+
+.TaskCard .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}

@@ -1,13 +1,11 @@
-import initialData from "../../data/initial-data";
+import type { IColumn, Tasks } from "../../data/modify-data";
 import { Droppable } from "react-beautiful-dnd";
 import Task from "../Task/Task";
 import "./styles.css";
 
-type ValueOf<T> = T[keyof T];
-
 interface ColumnProps {
-  column: ValueOf<(typeof initialData)["columns"]>;
-  tasks: ValueOf<(typeof initialData)["tasks"]>[];
+  column: IColumn;
+  tasks: Tasks;
 }
 
 export default function Column({ column, tasks }: ColumnProps) {
@@ -16,7 +14,6 @@ export default function Column({ column, tasks }: ColumnProps) {
       <div className="Title">{column.title}</div>
       <Droppable droppableId={column.id}>
         {(provider) => {
-          // console.log(snapshot, "snapshot");
           return (
             <div
               className="TaskList"

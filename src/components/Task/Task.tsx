@@ -12,7 +12,7 @@ interface ColumnProps {
 export default function Task({ task, index }: ColumnProps) {
   return (
     <Draggable draggableId={task.id} index={index}>
-      {(provider, snapshot, rubric) => (
+      {(provider) => (
         <div
           className="Task"
           {...provider.dragHandleProps}

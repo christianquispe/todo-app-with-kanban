@@ -1,0 +1,8 @@
+.TasksContainer {
+    display: flex;
+    gap: 1rem;
+}
+
+.task-form-container {
+    flex-grow: 1;
+}
