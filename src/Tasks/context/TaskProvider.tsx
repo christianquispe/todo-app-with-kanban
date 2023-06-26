@@ -19,11 +19,15 @@ export interface TaskWithId extends Task {
 
 export type getTasks = () => TaskWithId[];
 export type AddTask = (task: Task) => void;
+export type UpdTask = (id: string, updatedTask: Task) => void;
+export type GetTask = (id: string) => TaskWithId | null;
 
 interface TaskProviderResolvers {
   tasks: TaskWithId[];
   addTask: AddTask;
   getTasks: () => TaskWithId[];
+  getTask: GetTask;
+  updTask: UpdTask;
 }
 
 const [useTasks, Provider] = createSafeContext<TaskProviderResolvers>();
@@ -50,6 +54,20 @@ export function TasksProvider({ children }: PropsWithChildren) {
     return tasks;
   };
 
+  const updTask: UpdTask = (id, updatedTask) => {
+    const taskToUpd = tasks.map((task) =>
+      task.id === id ? { ...task, ...updatedTask } : task
+    );
+    console.log(taskToUpd);
+    setTasks(taskToUpd);
+  };
+
+  const getTask = (id: string) => {
+    const foundedTask = tasks.find((task) => task.id === id);
+    if (!foundedTask) return null;
+    return foundedTask;
+  };
+
   useEffect(() => {
     const tasksCached = localStorage.getItem(TASKS_KEY_LOCAL_STORAGE);
     if (tasksCached) {
@@ -63,6 +81,8 @@ export function TasksProvider({ children }: PropsWithChildren) {
         tasks,
         addTask,
         getTasks,
+        updTask,
+        getTask,
       }}
     >
       {children}

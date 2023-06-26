@@ -1,0 +1,6 @@
+.Button {
+    display: inline-block;
+    margin: 0;
+    padding: .8rem 1rem;
+    border-radius: .3rem;
+}

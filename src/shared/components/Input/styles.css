@@ -1,0 +1,22 @@
+.Input {
+  border: none;
+  padding: 0.8rem;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.Input.clean {
+  background-color: initial;
+}
+
+.Input.clean:focus-visible {
+  border: none;
+  outline: none;
+}
+
+.Input.clean:hover {
+  background-color: #fff;
+  transition: 0.3s;
+}
+
+

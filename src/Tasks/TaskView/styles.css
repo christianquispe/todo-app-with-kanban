@@ -6,6 +6,25 @@
   padding: 25px 50px;
 }
 
-.task-form-container {
+.TasksView .tasks-edit-form-wrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+.TasksView .task-list-wrapper {
   flex-grow: 1;
+}
+
+.TasksView .task-form-container {
+  flex-basis: 400px;
+}
+
+.TasksView .task-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.TasksView .task-form-header .close-btn:hover {
+    cursor: default; 
 }
