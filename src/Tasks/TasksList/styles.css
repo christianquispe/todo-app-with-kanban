@@ -1,0 +1,6 @@
+.TasksList {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-direction: column;
+}

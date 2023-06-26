@@ -1,6 +1,8 @@
-import { useTasks } from "./context/TaskProvider";
-import { InputCreateTask } from "./InputCreateTask";
-import { TaskCard } from "./TaskCard";
+import "./styles.css";
+
+import { useTasks } from "../context/TaskProvider";
+import { InputCreateTask } from "../InputCreateTask";
+import { TaskCard } from "../TaskCard";
 
 interface TaskList {
   onSelect: (id: string) => void;
@@ -8,8 +10,9 @@ interface TaskList {
 
 export default function TaskList({ onSelect }: TaskList) {
   const { tasks } = useTasks();
+
   return (
-    <section>
+    <section className="TasksList">
       <InputCreateTask />
       {tasks.map((task) => (
         <TaskCard

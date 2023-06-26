@@ -1,3 +1,5 @@
+import   "./styles.css";
+
 // import { KeyboardEventHandler } from "react";
 import { useForm } from "react-hook-form";
 
@@ -17,13 +19,13 @@ export default function InputCreateTask() {
   //   }
   // };
 
-  const submit = ({ name }: InputCreateTaskInputs) => {
-    addTask({ name });
+  const submit = ( values : InputCreateTaskInputs) => {
+    addTask({name: values.name})
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
-      <input type="text" {...register("name", { required: true })} />
+    <form className="InputCreateTaskForm" onSubmit={handleSubmit(submit)}>
+      <input className="InputCreateTask" type="text" placeholder="Add new task..." {...register("name", { required: true })} />
     </form>
   );
 }

@@ -1,0 +1,7 @@
+.Tag {
+    width: fit-content;
+    border: rgba(81, 76, 76, .4) 1.3px solid;
+    border-radius: 0.4rem;
+    padding: 0.25rem .3rem;
+    
+}

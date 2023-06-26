@@ -2,6 +2,7 @@ import { Task } from "../context/TaskProvider";
 import { adapterStatus } from "../adapters/tasks";
 
 import "./styles.css";
+import { Tag } from "../Tag";
 
 interface TaskCardProps extends Task {
   onClick?: () => void;
@@ -15,9 +16,9 @@ export default function TaskCard({
 }: TaskCardProps) {
   return (
     <div className="TaskCard" {...rest}>
-      <span className="TaskCard title">{name}</span>
+      <span className="title">{name}</span>
       <span>{prioriy}</span>
-      <span>{adapterStatus(status)}</span>
+      <Tag>{adapterStatus(status)}</Tag>
     </div>
   );
 }

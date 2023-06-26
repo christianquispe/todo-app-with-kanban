@@ -1,9 +1,15 @@
 .TaskCard {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 0.3rem;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 0.4rem;
+  padding: 0.8rem;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .TaskCard .title {
-    font-size: 1.5rem;
-    font-weight: 700;
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
 }

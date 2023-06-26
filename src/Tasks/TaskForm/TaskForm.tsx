@@ -14,12 +14,12 @@ export default function TaskForm({ onSubmit }: TaskFormProps) {
     mode: "onChange",
   });
 
-  const sumbit = (values: TaskFormInputs) => {
+  const submit = (values: TaskFormInputs) => {
     onSubmit(values);
   };
 
   return (
-    <form onSubmit={handleSubmit(sumbit)} className="TaskForm">
+    <form onSubmit={handleSubmit(submit)} className="TaskForm">
       <input type="text" {...register("name")} className="input" />
       <input type="text" {...register("prioriy")} className="input" />
       <input type="text" {...register("status")} className="input" />

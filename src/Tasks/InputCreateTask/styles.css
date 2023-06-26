@@ -1,0 +1,16 @@
+.InputCreateTask {
+  border: none;
+  background-color: initial;
+  padding: 0.8rem;
+  width: 100%;
+}
+.InputCreateTask:focus-visible {
+  border: none;
+  outline: none;
+}
+
+.InputCreateTask:hover {
+  background-color: #fff;
+  border-radius: 6px;
+  transition: 0.3s;
+}

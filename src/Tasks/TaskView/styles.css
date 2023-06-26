@@ -1,8 +1,11 @@
-.TasksContainer {
-    display: flex;
-    gap: 1rem;
+.TasksView {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f3f3f3;
+  min-height: 100vh;
+  color: rgb(7, 3, 3);
+  padding: 25px 50px;
 }
 
 .task-form-container {
-    flex-grow: 1;
+  flex-grow: 1;
 }
