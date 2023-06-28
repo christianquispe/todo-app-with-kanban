@@ -42,6 +42,7 @@ export default function TaskView() {
                 <TaskUpdateForm
                   defaultValues={taskToEdit}
                   onSubmit={(values) => {
+                    console.log(values, "vales");
                     updTask(taskToEditId, { ...values });
                   }}
                 />

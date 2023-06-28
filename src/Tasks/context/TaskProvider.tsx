@@ -55,11 +55,11 @@ export function TasksProvider({ children }: PropsWithChildren) {
   };
 
   const updTask: UpdTask = (id, updatedTask) => {
-    const taskToUpd = tasks.map((task) =>
+    const updatedTaks = tasks.map((task) =>
       task.id === id ? { ...task, ...updatedTask } : task
     );
-    console.log(taskToUpd);
-    setTasks(taskToUpd);
+    localStorage.setItem(TASKS_KEY_LOCAL_STORAGE, JSON.stringify(updatedTaks));
+    setTasks(updatedTaks);
   };
 
   const getTask = (id: string) => {
