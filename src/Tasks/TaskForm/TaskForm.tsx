@@ -19,10 +19,29 @@ export default function TaskForm({ onSubmit }: TaskFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="TaskForm">
-      <input type="text" {...register("name")} className="input" />
-      <input type="text" {...register("prioriy")} className="input" />
-      <input type="text" {...register("status")} className="input" />
+    <form
+      aria-label="task-form"
+      onSubmit={handleSubmit(submit)}
+      className="TaskForm"
+    >
+      <input
+        type="text"
+        {...register("name")}
+        aria-label="name"
+        className="input"
+      />
+      <input
+        type="text"
+        {...register("priority")}
+        aria-label="priority"
+        className="input"
+      />
+      <input
+        type="text"
+        {...register("status")}
+        aria-label="status"
+        className="input"
+      />
       <button type="submit">Enviar</button>
     </form>
   );

@@ -9,7 +9,7 @@ export type TaskStatusType = "backlog" | "to do" | "in progress" | "done";
 
 export interface Task {
   name: string;
-  prioriy?: "hight" | "medium" | "low";
+  priority?: "hight" | "medium" | "low";
   status?: TaskStatusType;
 }
 

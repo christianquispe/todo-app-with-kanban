@@ -18,7 +18,7 @@ export default function TaskList({ onSelect }: TaskList) {
         <TaskCard
           key={task.id}
           name={task.name}
-          prioriy={task.prioriy}
+          priority={task.priority}
           status={task.status}
           onClick={() => onSelect(task.id)}
         />

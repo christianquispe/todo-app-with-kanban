@@ -8,6 +8,12 @@ import { Button } from "../../shared/components/Button";
 import "./styles.css";
 import { useEffect } from "react";
 import { SelectOption } from "../../shared/components/Select/Select";
+import {
+  PRIORITY_OPTIONS,
+  PriorityOption,
+  STATUS_OPTIONS,
+  StatusOption,
+} from "../contants";
 
 export type TaskFormInputs = Task;
 
@@ -15,29 +21,6 @@ interface TaskFormProps {
   onSubmit: (values: TaskFormInputs) => void;
   defaultValues?: TaskFormInputs;
 }
-
-interface PriorityOption {
-  label: string;
-  value: Task["prioriy"];
-}
-
-interface StatusOption {
-  label: string;
-  value: Task["status"];
-}
-
-const PRIORITY_OPTIONS: PriorityOption[] = [
-  { label: "Alta", value: "hight" },
-  { label: "Medio", value: "medium" },
-  { label: "Bajo", value: "low" },
-];
-
-const STATUS_OPTIONS: StatusOption[] = [
-  { label: "Backlog", value: "backlog" },
-  { label: "Por hacer", value: "to do" },
-  { label: "En progreso", value: "in progress" },
-  { label: "Hecho", value: "done" },
-];
 
 export default function TaskUpdateForm({
   onSubmit,
@@ -57,51 +40,71 @@ export default function TaskUpdateForm({
   }, [defaultValues, reset]);
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="TaskUpdateForm">
+    <form
+      name="update-task-form"
+      onSubmit={handleSubmit(submit)}
+      className="TaskUpdateForm"
+    >
       <Input
         type="text"
         variant="clean"
         {...register("name")}
+        id="name"
+        aria-label="name"
         placeholder="Type you task name"
       />
-      <Controller
-        name="prioriy"
-        control={control}
-        render={({ field: { onBlur, onChange, value, ref } }) => (
-          <Select
-            ref={ref}
-            onBlur={onBlur}
-            options={PRIORITY_OPTIONS.map(({ value, label }) => ({
-              label,
-              value: value as string,
-            }))}
-            onChange={(val) => onChange(val.value as PriorityOption["value"])}
-            value={
-              PRIORITY_OPTIONS.find(
-                (opt) => opt.value === value
-              ) as SelectOption
-            }
-          />
-        )}
-      />
-      <Controller
-        name="status"
-        control={control}
-        render={({ field: { onBlur, onChange, value, ref } }) => (
-          <Select
-            ref={ref}
-            onBlur={onBlur}
-            options={STATUS_OPTIONS.map(({ value, label }) => ({
-              label,
-              value: value as string,
-            }))}
-            onChange={(val) => onChange(val.value as StatusOption["value"])}
-            value={
-              STATUS_OPTIONS.find((opt) => opt.value === value) as SelectOption
-            }
-          />
-        )}
-      />
+      <div>
+        <label htmlFor="priority">Task's priority</label>
+        <Controller
+          name="priority"
+          control={control}
+          render={({ field: { onBlur, onChange, value, ref } }) => (
+            <Select
+              aria-label="priority"
+              name="priority"
+              id="priority"
+              ref={ref}
+              onBlur={onBlur}
+              options={PRIORITY_OPTIONS.map(({ value, label }) => ({
+                label,
+                value: value as string,
+              }))}
+              onChange={(val) => onChange(val.value as PriorityOption["value"])}
+              value={
+                PRIORITY_OPTIONS.find(
+                  (opt) => opt.value === value
+                ) as SelectOption
+              }
+            />
+          )}
+        />
+      </div>
+      <div>
+        <label htmlFor="status">Task's status</label>
+        <Controller
+          name="status"
+          aria-label="status"
+          control={control}
+          render={({ field: { onBlur, onChange, value, ref } }) => (
+            <Select
+              name="status"
+              id="status"
+              ref={ref}
+              onBlur={onBlur}
+              options={STATUS_OPTIONS.map(({ value, label }) => ({
+                label,
+                value: value as string,
+              }))}
+              onChange={(val) => onChange(val.value as StatusOption["value"])}
+              value={
+                STATUS_OPTIONS.find(
+                  (opt) => opt.value === value
+                ) as SelectOption
+              }
+            />
+          )}
+        />
+      </div>
       <Button type="submit">Enviar</Button>
     </form>
   );

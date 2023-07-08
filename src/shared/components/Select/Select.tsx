@@ -7,20 +7,29 @@ export interface SelectOption {
 }
 
 interface SelectProps {
+  id?: string;
   onChange: (value: SelectOption) => void;
   options: SelectOption[];
   onBlur?: FocusEventHandler<HTMLInputElement>;
   value?: SelectOption; // No siempre se tiene un valor
+  name: string;
+  ["aria-label"]?: string;
 }
 
 const Select = forwardRef<any, SelectProps>(
-  ({ onChange, options, value, onBlur }, ref) => {
+  (
+    { onChange, options, value, onBlur, id, name, "aria-label": ariaLabel },
+    ref
+  ) => {
     const handleCreate = () => {
       console.log("Debería crearse");
     };
 
     return (
       <CreatableSelect
+        aria-label={ariaLabel}
+        name={name}
+        inputId={id}
         ref={ref}
         onBlur={onBlur}
         isDisabled={false}
