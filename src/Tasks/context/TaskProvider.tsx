@@ -22,7 +22,7 @@ export type AddTask = (task: Task) => void;
 export type UpdTask = (id: string, updatedTask: Task) => void;
 export type GetTask = (id: string) => TaskWithId | null;
 
-interface TaskProviderResolvers {
+export interface TaskProviderResolvers {
   tasks: TaskWithId[];
   addTask: AddTask;
   getTasks: () => TaskWithId[];
@@ -30,10 +30,11 @@ interface TaskProviderResolvers {
   updTask: UpdTask;
 }
 
-const [useTasks, Provider] = createSafeContext<TaskProviderResolvers>();
+const [useTasks, CreatorTaskProvider] =
+  createSafeContext<TaskProviderResolvers>();
 
 // eslint-disable-next-line react-refresh/only-export-components
-export { useTasks };
+export { useTasks, CreatorTaskProvider };
 export function TasksProvider({ children }: PropsWithChildren) {
   const [tasks, setTasks] = useState<TaskWithId[]>([]);
 
@@ -76,7 +77,7 @@ export function TasksProvider({ children }: PropsWithChildren) {
   }, []);
 
   return (
-    <Provider
+    <CreatorTaskProvider
       value={{
         tasks,
         addTask,
@@ -86,6 +87,6 @@ export function TasksProvider({ children }: PropsWithChildren) {
       }}
     >
       {children}
-    </Provider>
+    </CreatorTaskProvider>
   );
 }
