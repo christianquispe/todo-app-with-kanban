@@ -3,7 +3,7 @@ import "./App.css";
 import initialData, { IColumn, KanbanState } from "./data/modify-data";
 import { DragDropContext, type OnDragEndResponder } from "react-beautiful-dnd";
 import { Column } from "./components/Column";
-import { changeColumn } from "./util/kanban-utils";
+import { changeColumn } from "./utils/kanban-utils";
 
 function App() {
   const [data, setData] = useState<KanbanState>();

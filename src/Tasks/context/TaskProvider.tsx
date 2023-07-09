@@ -1,5 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from "react";
-import createSafeContext from "../../hooks/createSafeContext";
+import createSafeContext from "../../shared/hooks/createSafeContext";
 import { TASKS_KEY_LOCAL_STORAGE } from "../config";
 import { isTaskValidToCreate } from "../helpers/validations";
 
