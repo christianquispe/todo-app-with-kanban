@@ -11,14 +11,16 @@ interface TaskCardProps extends Task {
 export default function TaskCard({
   status = "backlog",
   name,
-  prioriy,
+  priority,
+  number,
   ...rest
 }: TaskCardProps) {
   return (
-    <div className="TaskCard" {...rest}>
-      <span className="title">{name}</span>
-      <span>{prioriy}</span>
+    <article className="TaskCard" {...rest}>
+      <h3 className="title">{name}</h3>
+      <span>#{number}</span>
+      <span>{priority}</span>
       <Tag>{adapterStatus(status)}</Tag>
-    </div>
+    </article>
   );
 }
