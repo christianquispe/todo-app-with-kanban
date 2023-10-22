@@ -1,7 +1,14 @@
 import { TaskUpdateForm } from ".";
-import { fireEvent, render, screen, userEvent } from "../../test/utils";
+import {
+  fireEvent,
+  render,
+  renderWithUser,
+  screen,
+  userEvent,
+} from "../../test/utils";
 import selectEvent from "react-select-event";
-import { PRIORITY_OPTIONS, STATUS_OPTIONS } from "../contants";
+import { PRIORITY_OPTIONS, STATUS_OPTIONS } from "../constants";
+import { act } from "react-dom/test-utils";
 
 const mockSubmit = vi.fn();
 
@@ -14,9 +21,15 @@ describe("<TaskUpdateForm />", async () => {
     render(<TaskUpdateForm onSubmit={mockSubmit} />);
 
     expect(screen.getByRole("form")).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "name" })).toBeInTheDocument();
-    expect(screen.getByLabelText("Task's priority")).toBeInTheDocument();
-    expect(screen.getByLabelText("Task's status")).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: /task's name/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: /priority/i })
+    ).toBeInTheDocument();
+    // expect(
+    //   screen.getByRole("combobox", { name: /status/i })
+    // ).toBeInTheDocument();
   });
 
   it("Should don't trigger the form", async () => {
@@ -28,22 +41,40 @@ describe("<TaskUpdateForm />", async () => {
   });
 
   it("Should save inputs value in form's state", async () => {
-    const user = userEvent.setup();
-    render(<TaskUpdateForm onSubmit={mockSubmit} />);
+    const { user } = renderWithUser(<TaskUpdateForm onSubmit={mockSubmit} />);
 
     const form = screen.getByRole("form");
 
     expect(form).toHaveFormValues({});
 
-    const nameInput = screen.getByRole("textbox", {
-      name: "name",
-    });
-    const priorityInput = screen.getByLabelText("Task's priority");
-    const statusInput = screen.getByLabelText("Task's status");
+    const nameInput = screen.getByRole("textbox", { name: /task's name/i });
+    const priorityInput = screen.getByRole("combobox", { name: /priority/i });
+    const statusInput = screen.getByRole("combobox", { name: /status/i });
 
+    // Type a name
     await user.type(nameInput, "uno");
-    await selectEvent.select(priorityInput, PRIORITY_OPTIONS[0].label);
-    await selectEvent.select(statusInput, STATUS_OPTIONS[0].label);
+
+    // Select priority
+    let options;
+    await user.click(priorityInput);
+    options = await screen.findAllByRole("option");
+    expect(options).toHaveLength(3);
+    const lowOption = options[0];
+    await user.click(lowOption);
+    options = screen.queryAllByRole("option");
+    expect(options).toHaveLength(0);
+
+    // Select a status
+    let statusOptions;
+    await user.click(statusInput);
+    statusOptions = await screen.findAllByRole("option");
+    expect(statusOptions).toHaveLength(4);
+    const todoOption = statusOptions[0];
+    await user.click(todoOption);
+    statusOptions = screen.queryAllByRole("option");
+    expect(statusOptions).toHaveLength(0);
+
+    // await user.click(form);
 
     expect(form).toHaveFormValues({
       name: "uno",
@@ -55,21 +86,24 @@ describe("<TaskUpdateForm />", async () => {
   it("Should exec osSubmit prop", async () => {
     const user = userEvent.setup();
     render(<TaskUpdateForm onSubmit={mockSubmit} />);
-    const submitBtn = screen.getByRole("button", { name: /Enviar/i });
+    const submitBtn = screen.getByRole("button", { name: /enviar/i });
 
-    const nameInput = screen.getByRole("textbox", {
-      name: "name",
-    });
-    const priorityInput = screen.getByLabelText("Task's priority");
-    const statusInput = screen.getByLabelText("Task's status");
+    const nameInput = screen.getByRole("textbox", { name: /task's name/i });
+    const priorityInput = screen.getByRole("combobox", { name: /priority/i });
+    const statusInput = screen.getByRole("combobox", { name: /status/i });
 
     await user.type(nameInput, "uno");
-    await selectEvent.select(priorityInput, PRIORITY_OPTIONS[0].label);
-    await selectEvent.select(statusInput, STATUS_OPTIONS[0].label);
+    await user.click(priorityInput);
+    const priorityOptions = await screen.findAllByRole("option");
+    await user.click(priorityOptions[0]);
+    await user.click(statusInput);
+    const statusOptions = await screen.findAllByRole("option");
+    await user.click(statusOptions[0]);
 
     await user.click(submitBtn);
     expect(mockSubmit).toBeCalledTimes(1);
     expect(mockSubmit).toBeCalledWith({
+      number: 0, // Revisar por qué
       name: "uno",
       priority: PRIORITY_OPTIONS[0].value,
       status: STATUS_OPTIONS[0].value,

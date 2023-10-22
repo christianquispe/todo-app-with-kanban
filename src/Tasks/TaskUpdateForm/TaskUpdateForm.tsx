@@ -1,19 +1,23 @@
-import { Select } from "../../shared/components/Select";
 import { useForm, Controller } from "react-hook-form";
 
 import { Task } from "../context/TaskProvider";
-import { Input } from "../../shared/components/Input";
-import { Button } from "../../shared/components/Button";
 
 import "./styles.css";
 import { useEffect } from "react";
-import { SelectOption } from "../../shared/components/Select/Select";
 import {
   PRIORITY_OPTIONS,
   PriorityOption,
   STATUS_OPTIONS,
   StatusOption,
-} from "../contants";
+} from "../constants";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 export type TaskFormInputs = Task;
 
@@ -26,9 +30,15 @@ export default function TaskUpdateForm({
   onSubmit,
   defaultValues,
 }: TaskFormProps) {
-  const { register, handleSubmit, reset, control } = useForm<TaskFormInputs>({
+  const { handleSubmit, reset, control } = useForm<TaskFormInputs>({
     mode: "onChange",
-    defaultValues,
+    defaultValues: {
+      name: "",
+      number: 0,
+      priority: PRIORITY_OPTIONS[0].value,
+      status: STATUS_OPTIONS[0].value,
+      ...defaultValues,
+    },
   });
 
   const submit = (values: TaskFormInputs) => {
@@ -45,66 +55,72 @@ export default function TaskUpdateForm({
       onSubmit={handleSubmit(submit)}
       className="TaskUpdateForm"
     >
-      <Input
-        type="text"
-        variant="clean"
-        {...register("name")}
-        id="name"
-        aria-label="name"
-        placeholder="Type you task name"
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            type="text"
+            placeholder="Type you task name"
+            label="Task's name"
+            {...field}
+          />
+        )}
       />
-      <div>
-        <label htmlFor="priority">Task's priority</label>
+      <FormControl fullWidth>
+        <InputLabel htmlFor="priority">Task's priority</InputLabel>
         <Controller
           name="priority"
           control={control}
-          render={({ field: { onBlur, onChange, value, ref } }) => (
+          render={({ field }) => (
             <Select
-              aria-label="priority"
-              name="priority"
-              id="priority"
-              ref={ref}
-              onBlur={onBlur}
-              options={PRIORITY_OPTIONS.map(({ value, label }) => ({
-                label,
-                value: value as string,
-              }))}
-              onChange={(val) => onChange(val.value as PriorityOption["value"])}
-              value={
-                PRIORITY_OPTIONS.find(
-                  (opt) => opt.value === value
-                ) as SelectOption
+              // aria-label="priority"
+              {...field}
+              onChange={(e) =>
+                field.onChange(e.target.value as PriorityOption["value"])
               }
-            />
+              label="Task's priority"
+              inputProps={{
+                ["aria-label"]: "priority",
+              }}
+            >
+              {PRIORITY_OPTIONS.map(({ value, label }) => (
+                <MenuItem key={value} value={value}>
+                  {label}
+                </MenuItem>
+              ))}
+            </Select>
           )}
         />
-      </div>
-      <div>
-        <label htmlFor="status">Task's status</label>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel>Task's status</InputLabel>
         <Controller
           name="status"
           aria-label="status"
           control={control}
-          render={({ field: { onBlur, onChange, value, ref } }) => (
-            <Select
-              name="status"
-              id="status"
-              ref={ref}
-              onBlur={onBlur}
-              options={STATUS_OPTIONS.map(({ value, label }) => ({
-                label,
-                value: value as string,
-              }))}
-              onChange={(val) => onChange(val.value as StatusOption["value"])}
-              value={
-                STATUS_OPTIONS.find(
-                  (opt) => opt.value === value
-                ) as SelectOption
-              }
-            />
-          )}
+          render={({ field }) => {
+            return (
+              <Select
+                {...field}
+                onChange={(e) =>
+                  field.onChange(e.target.value as StatusOption["value"])
+                }
+                label="Select a status"
+                inputProps={{
+                  ["aria-label"]: "status",
+                }}
+              >
+                {STATUS_OPTIONS.map(({ value, label }) => (
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </Select>
+            );
+          }}
         />
-      </div>
+      </FormControl>
       <Button type="submit">Enviar</Button>
     </form>
   );

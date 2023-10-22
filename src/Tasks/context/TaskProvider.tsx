@@ -11,6 +11,7 @@ export interface Task {
   name: string;
   priority?: "hight" | "medium" | "low";
   status?: TaskStatusType;
+  number: number;
 }
 
 export interface TaskWithId extends Task {
@@ -56,11 +57,13 @@ export function TasksProvider({ children }: PropsWithChildren) {
   };
 
   const updTask: UpdTask = (id, updatedTask) => {
-    const updatedTaks = tasks.map((task) =>
+    console.log(id, updatedTask, "id, updatedTask");
+    const updatedTasks = tasks.map((task) =>
       task.id === id ? { ...task, ...updatedTask } : task
     );
-    localStorage.setItem(TASKS_KEY_LOCAL_STORAGE, JSON.stringify(updatedTaks));
-    setTasks(updatedTaks);
+    localStorage.setItem(TASKS_KEY_LOCAL_STORAGE, JSON.stringify(updatedTasks));
+    console.log(updatedTasks, "updatedTasks");
+    setTasks(updatedTasks);
   };
 
   const getTask = (id: string) => {

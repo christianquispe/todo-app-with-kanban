@@ -1,4 +1,5 @@
 import { cleanup, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach } from "vitest";
 
 afterEach(() => {
@@ -12,6 +13,12 @@ function customRender(ui: React.ReactElement, options = {}) {
     ...options,
   });
 }
+
+export const renderWithUser = (ui: React.ReactElement, options = {}) => {
+  const user = userEvent.setup();
+  const rendered = customRender(ui, { ...options });
+  return { user, ...rendered };
+};
 
 export * from "@testing-library/react";
 export { default as userEvent } from "@testing-library/user-event";

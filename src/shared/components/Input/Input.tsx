@@ -1,16 +1,12 @@
 import { forwardRef } from "react";
-import "./styles.css";
+import { TextFieldProps } from "@mui/material";
+import { InputStyled } from "./styles";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  variant?: "clean" | "default";
-}
-
-const Input = forwardRef<HTMLInputElement, InputProps>(function Component(
-  { className, variant = "default", ...rest },
+const Input = forwardRef<HTMLInputElement, TextFieldProps>(function Component(
+  { ...rest },
   ref
 ) {
-  const classes = `Input ${variant || ""} ${className || ""}`;
-  return <input className={classes} type="text" {...rest} ref={ref} />;
+  return <InputStyled {...rest} ref={ref} />;
 });
 
 export default Input;

@@ -14,15 +14,19 @@ export default function TaskList({ onSelect }: TaskList) {
   return (
     <section className="TasksList">
       <InputCreateTask />
-      {tasks.map((task) => (
-        <TaskCard
-          key={task.id}
-          name={task.name}
-          priority={task.priority}
-          status={task.status}
-          onClick={() => onSelect(task.id)}
-        />
-      ))}
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.id} aria-label={`todo-item-${task.id}`}>
+            <TaskCard
+              name={task.name}
+              priority={task.priority}
+              status={task.status}
+              number={task.number}
+              onClick={() => onSelect(task.id)}
+            />
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

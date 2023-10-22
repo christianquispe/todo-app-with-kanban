@@ -1,8 +1,11 @@
-import { useState } from "react";
-import TaskList from "../TasksList/TasksList";
-import { useTasks } from "../context/TaskProvider";
-import "./styles.css";
+import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { TaskUpdateForm } from "../TaskUpdateForm";
+import { useState } from "react";
+import { useTasks } from "../context/TaskProvider";
+import { useTheme } from "../../TasksApp/TasksApp";
+import TaskList from "../TasksList/TasksList";
+
+import "./styles.css";
 
 export default function TaskView() {
   const [taskToEditId, setTaskToEditId] = useState<string | null>(null);
@@ -10,34 +13,41 @@ export default function TaskView() {
 
   const taskToEdit = getTask(taskToEditId ?? "");
 
+  const { toggleColorMode } = useTheme();
+
   return (
-    <section className="TasksView">
+    <Container>
+      <Button onClick={() => toggleColorMode()}>
+        <span>Cambiar de tema</span>
+      </Button>
       <div className="container-tasks-app">
-        <h2>Welcome back, Johan</h2>
-        <p>You've got {tasks.length} tasks up in the nexts days.</p>
-        <div className="tasks-edit-form-wrapper">
-          <div className="task-list-wrapper">
-            <TaskList
-              onSelect={(id) => {
-                if (id !== taskToEditId) {
-                  setTaskToEditId(id);
-                } else {
-                  setTaskToEditId(!taskToEditId ? id : null);
-                }
-              }}
-            />
-          </div>
+        <Typography variant="h2">Welcome back, Johan</Typography>
+        <Typography>
+          You've got {tasks.length} tasks up in the next days.
+        </Typography>
+
+        <Grid container spacing={4}>
+          <Grid item xs={taskToEdit ? 6 : 12}>
+            <div className="task-list-wrapper">
+              <TaskList
+                onSelect={(id) => {
+                  if (id !== taskToEditId) {
+                    setTaskToEditId(id);
+                  } else {
+                    setTaskToEditId(!taskToEditId ? id : null);
+                  }
+                }}
+              />
+            </div>
+          </Grid>
           {taskToEditId && (
-            <div className="task-form-container">
-              <div className="task-form-header">
-                <h3>Edit your task</h3>
-                <span
-                  className="close-btn"
-                  onClick={() => setTaskToEditId(null)}
-                >
-                  Close X
-                </span>
-              </div>
+            <Grid item xs={6}>
+              <Stack direction="row" justifyContent="space-between">
+                <Typography variant="h4">Edit your task</Typography>
+                <Button onClick={() => setTaskToEditId(null)}>
+                  <span className="close-btn">Close X</span>
+                </Button>
+              </Stack>
               {taskToEdit && taskToEditId && (
                 <TaskUpdateForm
                   defaultValues={taskToEdit}
@@ -47,10 +57,10 @@ export default function TaskView() {
                   }}
                 />
               )}
-            </div>
+            </Grid>
           )}
-        </div>
+        </Grid>
       </div>
-    </section>
+    </Container>
   );
 }
