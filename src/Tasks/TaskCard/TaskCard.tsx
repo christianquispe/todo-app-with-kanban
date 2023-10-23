@@ -19,7 +19,16 @@ export default function TaskCard({
   ...rest
 }: TaskCardProps) {
   return (
-    <Card {...rest}>
+    <Card
+      {...rest}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          rest.onClick?.();
+        }
+      }}
+    >
       <CardContent>
         <Typography variant="h5">{name}</Typography>
         <Stack

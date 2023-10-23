@@ -6,9 +6,7 @@ import {
   screen,
   userEvent,
 } from "../../test/utils";
-import selectEvent from "react-select-event";
 import { PRIORITY_OPTIONS, STATUS_OPTIONS } from "../constants";
-import { act } from "react-dom/test-utils";
 
 const mockSubmit = vi.fn();
 
@@ -27,9 +25,9 @@ describe("<TaskUpdateForm />", async () => {
     expect(
       screen.getByRole("combobox", { name: /priority/i })
     ).toBeInTheDocument();
-    // expect(
-    //   screen.getByRole("combobox", { name: /status/i })
-    // ).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: /status/i })
+    ).toBeInTheDocument();
   });
 
   it("Should don't trigger the form", async () => {

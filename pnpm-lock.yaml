@@ -79,9 +79,6 @@ devDependencies:
   jsdom:
     specifier: ^22.1.0
     version: 22.1.0
-  react-select-event:
-    specifier: ^5.5.1
-    version: 5.5.1
   typescript:
     specifier: ^5.0.2
     version: 5.0.2
@@ -3137,12 +3134,6 @@ packages:
       '@remix-run/router': 1.7.0
       react: 18.2.0
     dev: false
-
-  /react-select-event@5.5.1:
-    resolution: {integrity: sha512-goAx28y0+iYrbqZA2FeRTreHHs/ZtSuKxtA+J5jpKT5RHPCbVZJ4MqACfPnWyFXsEec+3dP5bCrNTxIX8oYe9A==}
-    dependencies:
-      '@testing-library/dom': 9.3.1
-    dev: true
 
   /react-select@5.7.3(@types/react@18.0.37)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-z8i3NCuFFWL3w27xq92rBkVI2onT0jzIIPe480HlBjXJ3b5o6Q+Clp4ydyeKrj9DZZ3lrjawwLC5NGl0FSvUDg==}

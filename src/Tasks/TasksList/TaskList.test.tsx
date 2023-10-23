@@ -1,5 +1,5 @@
 import { createMockTasksProvider } from "../../test/createMockTaskProvider";
-import { renderWithUser, screen, render } from "../../test/utils";
+import { renderWithUser, screen, render, within } from "../../test/utils";
 import { TaskWithId } from "../context/TaskProvider";
 
 import TasksList from "./TasksList";
@@ -38,11 +38,12 @@ describe("<TaskCard />", () => {
     const { user } = renderWithUser(<TasksList onSelect={onSelectMock} />, {
       wrapper: taskProvider,
     });
-    const taskCard = screen.getByRole("listitem", {
+    const itemList = screen.getByRole("listitem", {
       name: `todo-item-${TasksMocked[0].id}`,
     });
-    // await user.click(taskCard);
-    // expect(onSelectMock).toBeCalledTimes(1);
-    // expect(onSelectMock).toBeCalledWith(TasksMocked[0].id);
+    const cardItem = within(itemList).getByRole("button");
+    await user.click(cardItem);
+    expect(onSelectMock).toBeCalledTimes(1);
+    expect(onSelectMock).toBeCalledWith(TasksMocked[0].id);
   });
 });
